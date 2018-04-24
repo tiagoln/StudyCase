@@ -4,10 +4,6 @@
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Extensions" />
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
   </ItemGroup>
   <ItemGroup>
@@ -18,18 +14,6 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="._.DS_Store" />
-    <None Remove="Dtos\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="._Program.cs" />
-    <Compile Remove="Dtos\**" />
-    <Compile Remove="Extensions\UserExtensions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Remove="Dtos\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="Dtos\**" />
+    <Folder Include="Extensions" />
   </ItemGroup>
 </Project>
