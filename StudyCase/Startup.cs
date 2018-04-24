@@ -22,15 +22,8 @@ namespace StudyCase
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-#if DEBUG
             services.AddDbContext<StudyContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("DevConnection"));
-            });
-#else
-            services.AddDbContext<StudyContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
-#endif
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc(options =>
             {
