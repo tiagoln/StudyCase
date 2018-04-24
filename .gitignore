@@ -4,6 +4,8 @@ project.lock.json
 .DS_Store
 *.pyc
 nupkg/
+Thumbs.db
+Desktop.ini
 
 # Visual Studio Code
 .vscode
@@ -25,9 +27,27 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+[Pp]ackages/
 msbuild.log
 msbuild.err
 msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUNIT
+*.VisualState.xml
+TestResult.xml
+
+# ReSharper is a .NET coding add-in
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Rider
+# Rider auto-generates .iml files, and contentModel.xml
+**/.idea/**

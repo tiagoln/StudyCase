@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Extensions" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="._.DS_Store" />
+    <None Remove="Dtos\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="._Program.cs" />
+    <Compile Remove="Dtos\**" />
+    <Compile Remove="Extensions\UserExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Dtos\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Dtos\**" />
+  </ItemGroup>
+</Project>
