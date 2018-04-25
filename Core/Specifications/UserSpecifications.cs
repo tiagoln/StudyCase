@@ -6,7 +6,7 @@ namespace Core.Specifications
     {
         public UserWithOrdersSpecification()
         {
-            AddInclude(user => user.Orders);
+            AddInclude("UserProfile.Orders");
         }
     }
 }

@@ -17,7 +17,8 @@ namespace Infrastructure.Repository
             _transaction = context.Database.BeginTransaction();
         }
 
-        public IRepository<User, int> UserRepository => new Repository<User, int>(_context);
+        public IRepository<User, string> UserRepository => new UserRepository(_context);
+        public IRepository<UserProfile, string> UserProfileRepository => new Repository<UserProfile,string>(_context);
         public IRepository<Order, int> OrdeRepository => new Repository<Order, int>(_context);
 
         public void Save()

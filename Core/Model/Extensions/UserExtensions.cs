@@ -12,8 +12,8 @@ namespace Core.Model.Extensions
             return new UserDto
             {
                 Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                FirstName = user.UserProfile.FirstName,
+                LastName = user.UserProfile.LastName,
                 CreatedAt = user.CreatedAt
             };
         }
@@ -28,9 +28,12 @@ namespace Core.Model.Extensions
             return new User
             {
                 CreatedAt = DateTime.Now,
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Orders = new List<Order>()
+                UserProfile = new UserProfile
+                {
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName,
+                    Orders = new List<Order>()
+                }
             };
         }
     }

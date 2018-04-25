@@ -25,7 +25,7 @@ namespace StudyCase.Controllers
 
         [HttpGet]
         // GET api/values/5
-        public UserDto Get([FromQuery] int id)
+        public UserDto Get([FromQuery] string id)
         {
             return _uow.UserRepository.GetById(id).GetDto();
         }
@@ -56,7 +56,7 @@ namespace StudyCase.Controllers
 
         [HttpDelete]
         // DELETE api/values/5
-        public void Delete([FromQuery] int id)
+        public void Delete([FromQuery] string id)
         {
             var user = _uow.UserRepository.GetById(id);
             if (user != null)

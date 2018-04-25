@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Core.Model;
 
 namespace Core.Interfaces
 {
-    public interface IRepository<T, in TId> where T : EntityBase<TId>
+    public interface IRepository<T, in TId>
     {
         T GetById(TId id);
         IEnumerable<T> List();

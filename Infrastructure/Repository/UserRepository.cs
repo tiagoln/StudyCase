@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Core.Interfaces;
 using Core.Model;
 using Infrastructure.Database;
@@ -8,37 +9,37 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
-    public class Repository<T, TId> : IRepository<T, TId> where T : EntityBase<TId>
+    public class UserRepository : IRepository<User, string>
     {
         private readonly StudyContext _dbContext;
 
-        public Repository(StudyContext dbContext)
+        public UserRepository(StudyContext context)
         {
-            _dbContext = dbContext;
+            _dbContext = context;
         }
 
-        public T GetById(TId id)
+        public User GetById(string id)
         {
-            return _dbContext.Set<T>().Find(id);
+            return _dbContext.Users.Find(id);
         }
 
-        public virtual IEnumerable<T> List()
+        public virtual IEnumerable<User> List()
         {
-            return _dbContext.Set<T>().AsEnumerable();
+            return _dbContext.Users.AsEnumerable();
         }
 
-        public virtual IEnumerable<T> List(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+        public virtual IEnumerable<User> List(Expression<Func<User, bool>> predicate)
         {
-            return _dbContext.Set<T>()
+            return _dbContext.Users
                 .Where(predicate)
                 .AsEnumerable();
         }
 
-        public IEnumerable<T> List(ISpecification<T> spec)
+        public IEnumerable<User> List(ISpecification<User> spec)
         {
             // fetch a Queryable that includes all expression-based includes
             var queryWithExpressionIncludes = spec.Includes
-                .Aggregate(_dbContext.Set<T>().AsQueryable(),
+                .Aggregate(_dbContext.Users.AsQueryable(),
                     (current, include) => current.Include(include));
  
             // modify the IQueryable to include any string-based include statements
@@ -56,24 +57,19 @@ namespace Infrastructure.Repository
                 .AsEnumerable();
         }
 
-        public void Add(T entity)
+        public void Add(User entity)
         {
-            _dbContext.Set<T>().Add(entity);
+            _dbContext.Users.Add(entity);
         }
 
-        public async void AddAsync(T entity)
-        {
-            await _dbContext.Set<T>().AddAsync(entity);
-        }
-
-        public void Update(T entity)
+        public void Update(User entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Delete(T entity)
+        public void Delete(User entity)
         {
-            _dbContext.Set<T>().Remove(entity);
+            _dbContext.Users.Remove(entity);
         }
     }
 }
