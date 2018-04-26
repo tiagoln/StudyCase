@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.DTOs;
 using Core.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,6 @@ namespace StudyCase.Controllers
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IConfiguration configuration,
             JwtTokenGenerator jwtTokenGenerator
         )
         {
@@ -46,7 +46,7 @@ namespace StudyCase.Controllers
 
                 if (appUser == null)
                 {
-                    return "This user do not exists!";
+                    return "This user do not exist!";
                 }
 
                 if (!appUser.EmailConfirmed)
@@ -64,7 +64,7 @@ namespace StudyCase.Controllers
 
             if (result.ToString().Equals("Failed"))
             {
-                return "Login attempt failed!";
+                return "Wrong login or password!";
             }
 
             return "DAFUK?! oO";
@@ -79,24 +79,17 @@ namespace StudyCase.Controllers
                 Email = model.Email,
                 UserProfile = new UserProfile
                 {
-                    Orders = new List<Order>(),                    
+                    Orders = new List<Order>(),
                 }
             };
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                return "User created successfully, please login.";
+                return "User successfully created, please login.";
             }
 
             throw new ApplicationException("UNKNOWN_ERROR");
-        }
-
-        public class LoginDto
-        {
-            [Required] public string Email { get; set; }
-
-            [Required] public string Password { get; set; }
         }
 
         public class RegisterDto

@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.Interfaces.RepositoryContracts;
 using Core.Model;
 
 namespace Core.Interfaces
@@ -6,7 +7,7 @@ namespace Core.Interfaces
     public interface IUnityOfWork : IDisposable
     {
         IRepository<User, string> UserRepository { get; }
-        IRepository<UserProfile, string> UserProfileRepository { get; }
+        IUserProfileRepository UserProfileRepository { get; }
         IRepository<Order, int> OrdeRepository { get; }        
         
         void Save();

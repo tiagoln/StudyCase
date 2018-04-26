@@ -1,5 +1,6 @@
 ﻿using System;
 using Core.Interfaces;
+using Core.Interfaces.RepositoryContracts;
 using Core.Model;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -18,7 +19,7 @@ namespace Infrastructure.Repository
         }
 
         public IRepository<User, string> UserRepository => new UserRepository(_context);
-        public IRepository<UserProfile, string> UserProfileRepository => new Repository<UserProfile,string>(_context);
+        public IUserProfileRepository UserProfileRepository => new UserProfileRepository(_context);
         public IRepository<Order, int> OrdeRepository => new Repository<Order, int>(_context);
 
         public void Save()
@@ -35,8 +36,9 @@ namespace Infrastructure.Repository
         {
             _transaction.Rollback();
         }
-        
+
         private bool _disposed;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)

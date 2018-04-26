@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.Helpers;
 using Microsoft.AspNetCore.Identity;
 
 namespace Core.Model
@@ -7,7 +8,7 @@ namespace Core.Model
     {
         public User()
         {
-            Id = Guid.NewGuid().ToString();
+            Id = GuidComb.Generate().ToString();
         }
 
         public DateTime CreatedAt { get; set; }

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Core.Helpers;
 
 namespace Core.Model
 {
@@ -8,7 +8,7 @@ namespace Core.Model
     {
         public UserProfile()
         {
-            Id = Guid.NewGuid().ToString();
+            Id = GuidComb.Generate().ToString();
         }
 
         [Required]
