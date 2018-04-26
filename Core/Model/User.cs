@@ -12,7 +12,6 @@ namespace Core.Model
 
         public DateTime CreatedAt { get; set; }
 
-        public string UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
     }
 }
