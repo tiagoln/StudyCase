@@ -6,7 +6,7 @@ namespace Core.Interfaces
 {
     public interface IUnityOfWork : IDisposable
     {
-        IRepository<User, string> UserRepository { get; }
+        IRepository<User, Guid> UserRepository { get; }
         IUserProfileRepository UserProfileRepository { get; }
         IRepository<Order, int> OrdeRepository { get; }        
         

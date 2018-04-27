@@ -1,16 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Core.Helpers;
 
 namespace Core.Model
 {
-    public class UserProfile : EntityBase<string>
+    public class UserProfile : EntityBase<Guid>
     {
-        public UserProfile()
-        {
-            Id = GuidComb.Generate().ToString();
-        }
-
         [Required]
         [StringLength(20, MinimumLength = 1)]
         public string FirstName { get; set; }
@@ -21,7 +16,7 @@ namespace Core.Model
 
         public ICollection<Order> Orders { get; set; }
 
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; }
     }
 }

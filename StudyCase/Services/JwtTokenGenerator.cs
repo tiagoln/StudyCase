@@ -18,7 +18,7 @@ namespace StudyCase.Services
             _configuration = configuration;
         }
 
-        internal string GenerateJwtToken(string email, IdentityUser user)
+        internal string GenerateJwtToken(string email, IdentityUser<Guid> user)
         {
             var claims = new List<Claim>
             {

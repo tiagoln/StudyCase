@@ -18,7 +18,7 @@ namespace Infrastructure.Repository
             _transaction = context.Database.BeginTransaction();
         }
 
-        public IRepository<User, string> UserRepository => new UserRepository(_context);
+        public IRepository<User, Guid> UserRepository => new UserRepository(_context);
         public IUserProfileRepository UserProfileRepository => new UserProfileRepository(_context);
         public IRepository<Order, int> OrdeRepository => new Repository<Order, int>(_context);
 

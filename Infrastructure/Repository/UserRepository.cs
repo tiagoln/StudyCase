@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
-    public class UserRepository : IRepository<User, string>
+    public class UserRepository : IRepository<User, Guid>
     {
         private readonly StudyContext _dbContext;
 
@@ -18,7 +18,7 @@ namespace Infrastructure.Repository
             _dbContext = context;
         }
 
-        public User GetById(string id)
+        public User GetById(Guid id)
         {
             return _dbContext.Users.Find(id);
         }

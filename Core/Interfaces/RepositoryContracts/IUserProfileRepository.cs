@@ -1,9 +1,10 @@
-﻿using Core.Model;
+﻿using System;
+using Core.Model;
 
 namespace Core.Interfaces.RepositoryContracts
 {
-    public interface IUserProfileRepository : IRepository<UserProfile, string>
+    public interface IUserProfileRepository : IRepository<UserProfile, Guid>
     {
-        UserProfile GetByUserId(string userId);
+        UserProfile GetByUserId(Guid userId);
     }
 }

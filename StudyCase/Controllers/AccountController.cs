@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.DTOs;
+using Core.Interfaces;
 using Core.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using StudyCase.Services;
 
 namespace StudyCase.Controllers
@@ -17,16 +16,18 @@ namespace StudyCase.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly JwtTokenGenerator _jwtTokenGenerator;
+        private readonly IUnityOfWork _uow;
 
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            JwtTokenGenerator jwtTokenGenerator
-        )
+            JwtTokenGenerator jwtTokenGenerator, 
+            IUnityOfWork uow)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtTokenGenerator = jwtTokenGenerator;
+            _uow = uow;
         }
 
         [HttpPost]
@@ -76,11 +77,7 @@ namespace StudyCase.Controllers
             var user = new User
             {
                 UserName = model.Email,
-                Email = model.Email,
-                UserProfile = new UserProfile
-                {
-                    Orders = new List<Order>(),
-                }
+                Email = model.Email
             };
             var result = await _userManager.CreateAsync(user, model.Password);
 

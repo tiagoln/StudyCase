@@ -1,4 +1,5 @@
-﻿using Core.Model;
+﻿using System;
+using Core.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Infrastructure.Database
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public sealed class StudyContext : IdentityDbContext<User>
+    public sealed class StudyContext : IdentityDbContext<User, Role, Guid>
     {
         public StudyContext(DbContextOptions<StudyContext> options) : base(options)
         {
@@ -22,13 +23,23 @@ namespace Infrastructure.Database
 
             // ==== Custom Identy table names ====
             modelBuilder.Entity<User>().ToTable("IdentityUser");
-            modelBuilder.Entity<IdentityRole>().ToTable("IdentityRole");
-            modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("IdentityUserClaim");
-            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("IdentityUserRole");
-            modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("IdentityUserLogin");
-            modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("IdentityRoleClaim");
-            modelBuilder.Entity<IdentityUserToken<string>>().ToTable("IdentityUserToken");
+            modelBuilder.Entity<Role>().ToTable("IdentityRole");
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("IdentityUserClaim");
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("IdentityUserRole");
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("IdentityUserLogin");
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("IdentityRoleClaim");
+            modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("IdentityUserToken");
             //====================================
+            
+            modelBuilder.Entity<User>(b =>
+            {
+                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
+            });
+
+            modelBuilder.Entity<Role>(b =>
+            {
+                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
+            });
         }
     }
 }

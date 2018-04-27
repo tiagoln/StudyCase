@@ -35,7 +35,7 @@ namespace StudyCase
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // ===== Add Identity ========
-            services.AddIdentity<User, IdentityRole>(options =>
+            services.AddIdentity<User, Role>(options =>
                 {
                     // === Password settings ===
                     options.Password.RequireDigit = true;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.DTOs;
 using Core.Interfaces;
 using Core.Model.Extensions;
@@ -27,7 +28,7 @@ namespace StudyCase.Controllers
         // GET api/values/5
         public UserDto Get([FromQuery] string id)
         {
-            return _uow.UserRepository.GetById(id).GetDto();
+            return _uow.UserRepository.GetById(Guid.Parse(id)).GetDto();
         }
 
         [HttpPost]
@@ -58,7 +59,7 @@ namespace StudyCase.Controllers
         // DELETE api/values/5
         public void Delete([FromQuery] string id)
         {
-            var user = _uow.UserRepository.GetById(id);
+            var user = _uow.UserRepository.GetById(Guid.Parse(id));
             if (user != null)
                 _uow.UserRepository.Delete(user);
         }
