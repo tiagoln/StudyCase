@@ -9,13 +9,15 @@ namespace Core.Model.Extensions
     {
         public static UserDto GetDto(this User user)
         {
-            return new UserDto
-            {
-                Id = user.Id,
-                FirstName = user.UserProfile.FirstName,
-                LastName = user.UserProfile.LastName,
-                CreatedAt = user.CreatedAt
-            };
+            if (user != null)
+                return new UserDto
+                {
+                    Id = user.Id,
+                    FirstName = user.UserProfile?.FirstName,
+                    LastName = user.UserProfile?.LastName,
+                    CreatedAt = user.CreatedAt
+                };
+            return new UserDto();
         }
 
         public static IEnumerable<UserDto> GetDtoList(this IEnumerable<User> userList)

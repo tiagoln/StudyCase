@@ -1,10 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Core.DTOs;
-using Core.Interfaces;
 using Core.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StudyCase.Services;
@@ -16,40 +16,37 @@ namespace StudyCase.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly JwtTokenGenerator _jwtTokenGenerator;
-        private readonly IUnityOfWork _uow;
 
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            JwtTokenGenerator jwtTokenGenerator, 
-            IUnityOfWork uow)
+            JwtTokenGenerator jwtTokenGenerator,
+            RoleManager<Role> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtTokenGenerator = jwtTokenGenerator;
-            _uow = uow;
         }
 
         [HttpPost]
         public async Task<object> Login([FromBody] LoginDto model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
+            var appUser = await _userManager.FindByEmailAsync(model.Email);
+
+            if (appUser == null)
+            {
+                return "This user do not exist!";
+            }
+
+            var result = await _signInManager.CheckPasswordSignInAsync(appUser, model.Password, true);
 
             if (result.Succeeded)
             {
-                var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                return _jwtTokenGenerator.GenerateJwtToken(model.Email, appUser);
+                return await _jwtTokenGenerator.GenerateJwtToken(model.Email, appUser);
             }
 
             if (result.IsNotAllowed)
             {
-                var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-
-                if (appUser == null)
-                {
-                    return "This user do not exist!";
-                }
-
                 if (!appUser.EmailConfirmed)
                 {
                     return "You need to confirm your email!";
@@ -63,12 +60,7 @@ namespace StudyCase.Controllers
                 return "Too many attempts, try again later!";
             }
 
-            if (result.ToString().Equals("Failed"))
-            {
-                return "Wrong login or password!";
-            }
-
-            return "DAFUK?! oO";
+            return "Wrong login or password!";
         }
 
         [HttpPost]
@@ -86,16 +78,31 @@ namespace StudyCase.Controllers
                 return "User successfully created, please login.";
             }
 
-            throw new ApplicationException("UNKNOWN_ERROR");
+            var sb = new StringBuilder();
+            foreach (var error in result.Errors)
+            {
+                sb.AppendLine($"Error code {error.Code}: {error.Description}");
+            }
+
+            return sb.ToString();
         }
 
-        public class RegisterDto
+        [Authorize]
+        [HttpPut]
+        public async Task<IActionResult> MakeAdmin()
         {
-            [Required] public string Email { get; set; }
+            var userName = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
 
-            [Required]
-            [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
-            public string Password { get; set; }
+            var user = await _userManager.FindByEmailAsync(userName);
+            await _userManager.AddToRoleAsync(user, "Administrator");
+
+            return Json(new
+            {
+                User.Identity.IsAuthenticated,
+                user.Id,
+                Name = $"{user.Email} {user.CreatedAt}",
+                Type = User.Identity.AuthenticationType,
+            });
         }
     }
 }

@@ -34,6 +34,7 @@ namespace Infrastructure.Database
             modelBuilder.Entity<User>(b =>
             {
                 b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
+                b.Property(u => u.CreatedAt).HasDefaultValueSql("getdate()");
             });
 
             modelBuilder.Entity<Role>(b =>

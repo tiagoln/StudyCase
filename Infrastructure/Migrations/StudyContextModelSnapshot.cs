@@ -32,7 +32,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<Guid?>("UserId1");
 
-                    b.Property<string>("UserProfileId");
+                    b.Property<Guid?>("UserProfileId");
 
                     b.HasKey("Id");
 
@@ -79,7 +79,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<DateTime>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -109,8 +111,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
-                    b.Property<string>("UserProfileId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -121,16 +121,12 @@ namespace Infrastructure.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("UserProfileId")
-                        .IsUnique()
-                        .HasFilter("[UserProfileId] IS NOT NULL");
-
                     b.ToTable("IdentityUser");
                 });
 
             modelBuilder.Entity("Core.Model.UserProfile", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("FirstName")
@@ -141,9 +137,12 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20);
 
-                    b.Property<string>("UserId");
+                    b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("UserProfiles");
                 });
@@ -240,11 +239,12 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserProfileId");
                 });
 
-            modelBuilder.Entity("Core.Model.User", b =>
+            modelBuilder.Entity("Core.Model.UserProfile", b =>
                 {
-                    b.HasOne("Core.Model.UserProfile", "UserProfile")
-                        .WithOne("User")
-                        .HasForeignKey("Core.Model.User", "UserProfileId");
+                    b.HasOne("Core.Model.User", "User")
+                        .WithOne("UserProfile")
+                        .HasForeignKey("Core.Model.UserProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

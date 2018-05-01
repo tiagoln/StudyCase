@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore;
+﻿using Infrastructure.Extensions;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace StudyCase
@@ -7,7 +8,7 @@ namespace StudyCase
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            BuildWebHost(args).SeedData().Result.Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

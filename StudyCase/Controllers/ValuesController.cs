@@ -4,10 +4,12 @@ using Core.DTOs;
 using Core.Interfaces;
 using Core.Model.Extensions;
 using Core.Specifications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace StudyCase.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class ValuesController : Controller
     {
         private readonly IUnityOfWork _uow;

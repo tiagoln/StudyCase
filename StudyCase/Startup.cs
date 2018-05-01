@@ -8,10 +8,12 @@ using Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using StudyCase.ActionFilters;
 using StudyCase.Services;
@@ -35,7 +37,7 @@ namespace StudyCase
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // ===== Add Identity ========
-            services.AddIdentity<User, Role>(options =>
+            var builder = services.AddIdentityCore<User>(options =>
                 {
                     // === Password settings ===
                     options.Password.RequireDigit = true;
@@ -56,9 +58,13 @@ namespace StudyCase
 
                     // === User settings ===
                     options.User.RequireUniqueEmail = true;
-                })
-                .AddEntityFrameworkStores<StudyContext>()
-                .AddDefaultTokenProviders();
+                }
+            );
+            builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
+            builder.AddEntityFrameworkStores<StudyContext>()
+                .AddRoleValidator<RoleValidator<Role>>()
+                .AddRoleManager<RoleManager<Role>>()
+                .AddSignInManager<SignInManager<User>>();
 
             // ===== Add Jwt Authentication ========
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
@@ -92,6 +98,7 @@ namespace StudyCase
             // ===== Add Dependency Injection stuff ========
             services.AddScoped<IUnityOfWork, UnitOfWork>();
             services.AddTransient<JwtTokenGenerator>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // ===== Add Routing ========
             services.AddRouting();
