@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Core.Interfaces;
 using Core.Model;
+using Infrastructure;
 using Infrastructure.Database;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -61,7 +62,9 @@ namespace StudyCase
                 }
             );
             builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
-            builder.AddEntityFrameworkStores<StudyContext>()
+            builder
+                .AddUserStore<NewPcsUserStore>()
+                .AddRoleStore<NewPcsRoleStore>()
                 .AddRoleValidator<RoleValidator<Role>>()
                 .AddRoleManager<RoleManager<Role>>()
                 .AddSignInManager<SignInManager<User>>();

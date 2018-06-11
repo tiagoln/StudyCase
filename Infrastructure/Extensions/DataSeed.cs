@@ -24,20 +24,20 @@ namespace Infrastructure.Extensions
 
         private static async Task SeedRoles(RoleManager<Role> roleManager)
         {
-            if (!roleManager.Roles.Any())
-            {
-                var roles = new List<Role>
-                {
-                    new Role {Name = "Administrator",},
-                    new Role {Name = "Customer",},
-                    new Role {Name = "Employee",}
-                };
-
-                foreach (var role in roles)
-                {
-                    await roleManager.CreateAsync(role);
-                }
-            }
+//            if (!roleManager.Roles.Any())
+//            {
+//                var roles = new List<Role>
+//                {
+//                    new Role {Name = "Administrator",},
+//                    new Role {Name = "Customer",},
+//                    new Role {Name = "Employee",}
+//                };
+//
+//                foreach (var role in roles)
+//                {
+//                    await roleManager.CreateAsync(role);
+//                }
+//            }
         }
     }
 }

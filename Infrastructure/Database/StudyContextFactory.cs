@@ -8,7 +8,7 @@ namespace Infrastructure.Database
         public StudyContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<StudyContext>();
-            optionsBuilder.UseSqlServer("Server = tcp:localhost,1433; Database = StudyCase; User Id = sa; Password = SaPass123; MultipleActiveResultSets=True");
+            optionsBuilder.UseSqlServer("Server = tcp:localhost,1433; Database = StudyCase; User Id = sa; Password = Admin#123; MultipleActiveResultSets=True");
 
             return new StudyContext(optionsBuilder.Options);
         }

@@ -71,7 +71,7 @@ namespace StudyCase.Controllers
                 UserName = model.Email,
                 Email = model.Email
             };
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user);
 
             if (result.Succeeded)
             {
